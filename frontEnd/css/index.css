@@ -1,0 +1,43 @@
+.main_inner {
+    width: 90%;
+    min-width: 200px;
+    min-height: 200px;
+    background-color: var(--main-background-color-light);
+    border-radius: 5px;
+    box-shadow: 0 1px 11px var(--box-shadow-color);
+}
+
+.main_inner_hbg, .main_inner_bbg {
+    height: 100px;
+    background-color: #ccc;
+    color: #999;
+    border-radius: 5px 5px 0 0;
+}
+
+.search_input_main {
+    text-align: left;
+}
+
+.main_qrcode_area {
+    width: 200px;
+    height: 200px;
+    background-color: #ccc;
+    color: #999;
+    border:1px solid var(--input-border-color);
+    
+}
+
+.main_inner_bbg {
+    border-radius: 0 0 0 0;
+}
+
+.main_inner_barea_l {
+    width: 100px;
+    height: 100px;
+    color: #999;
+}
+
+.main_inner_submit {
+    width: calc(100% - 100px);
+    text-align: center;
+}

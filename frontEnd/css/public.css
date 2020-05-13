@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ul { list-style: none; }
+
+/* 定义通用样式 */
+.flex { display: flex; }
+.just_betw { display: flex; justify-content: space-between; }
+.just_cent { display: flex; justify-content: center; }
+.align_cent { display: flex; align-items: center; }
+.txt_cent { text-align: center; }
+.padd_11px { padding: 11px }
+
+body {
+    /* *********************************************************
+                        颜色
+    ***********************************************************/
+    /* 自定义变量 */
+    /* 主背景色 */
+    --main-background-color: #DC747F;
+    /* 主背景色亮色 */
+    --main-background-color-light: #fff;
+    /* 主文本色 */
+    --main-color: #fff;
+    /* input背景色 */
+    --input-background-color: #f4f4f9;
+    /* input文本色 */
+    --input-color: #666;
+    /* inpuy边框色 */
+    --input-border-color: #ddd;
+    /* 边框阴影色 */
+    --box-shadow-color: #999;
+    /* *********************************************************
+                        字体
+    ***********************************************************/
+    /* 大字体 */
+    --font-size-big: 20px;
+    /* 默认字体 */
+    --font-size-normal: 16px;
+    /* 小字体 */
+    --font-size-small: 12px;
+
+}
+.container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: var(--main-background-color);
+    color: var(--main-color);
+    font-size: var(--font-size-big);
+    box-shadow: 0 0 11px var(--box-shadow-color);
+    padding: 9px;
+}
+
+.header_left {
+
+}
+.logo {
+
+}
+.logo> img {
+    width: auto;
+    height: 40px;
+}
+
+.search_input {
+    width: 100%;
+    background-color: var(--input-background-color);
+    border-radius: 5px;
+    border: 1px solid var(--input-border-color);
+    color: var(--input-color);
+    font-size: var(--font-size-normal);
+    outline: none;
+    padding: 0.5em;
+}
+.header_right {
+
+}
+
+.header_login {
+
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 130px);
+}
+
+.footer {
+
+}
