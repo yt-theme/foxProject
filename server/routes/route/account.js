@@ -54,7 +54,10 @@ class Account {
 
     // 检查登录
     static checklogin (req, res) {
-
+        if (req.method != 'POST') {
+            res.end(JSON.stringify({ "ret": 0, msg: "checklogin: !post not allowed" }))
+            return false
+        }
     }
 }
 
