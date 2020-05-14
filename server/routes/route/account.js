@@ -43,12 +43,12 @@ class Account {
             const sql_promise = await sql_func.conn_promise()
             try {
                 await sql_promise.beginTransaction()
-                const db_insert_ret = await sql_promise.query('insert into users(name, passwd, lastlogin) values (?, ?, ?)', 
-                                        [params.name, bcrypt.hashSync(params.passwd, config.BCRYPT.SALT), lastlogin])
+                const db_insert_ret = await sql_promise.query('insert into users(name, passwd, lastlogin) values (?, ?, ?)', [params.name, bcrypt.hashSync(params.passwd, config.BCRYPT.SALT), lastlogin])
+                
                 if (db_insert_ret[0]) {
                     await sql_promise.commit()
                     res.end(JSON.stringify({"ret": 1, "msg": '注册成功', "data": { "token": token_func.create(db_insert_ret[0].insertId, lastlogin.toString()) } }))
-                }else {
+                } else {
                     await sql_promise.rollback()
                     res.end(JSON.stringify({"ret": 0, "msg": '注册失败', "data": null }))
                 }

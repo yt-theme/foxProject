@@ -32,7 +32,6 @@ class Mysql_pool {
         return new Promise ((resolve, reject) => {
             __this__.mysql_pool.getConnection((err, connection) => {
                 if (err) {
-                    console.log("mysql_pool getConnection err =>", err)
                     reject (false)
                 } else {
                     resolve(connection.promise())
@@ -46,9 +45,9 @@ class Mysql_pool {
         const __this__ = this
         return new Promise ((resolve, reject) => {
             __this__.mysql_pool.getConnection((err, connection) => {
-                // console.log("mysql get_conn =>", connection)
-                if (err) { reject(err) }
-                else {
+                if (err) {
+                    reject(err)
+                } else {
                     connection.query(sql, values, (error, results, fields) => {
                         connection.release()
                         if (error) { reject(error) }
