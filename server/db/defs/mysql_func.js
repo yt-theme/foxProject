@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 const config = require("../../../config")
 
@@ -21,12 +21,42 @@ class Mysql_pool {
         return this.instance
     }
 
+    // 获取连接池
+    pool () {
+        return this.mysql_pool
+    }
+
+    // 获取连接 promise 版
+    conn_promise () {
+        const __this__ = this
+        return new Promise ((resolve, reject) => {
+            __this__.mysql_pool.getConnection((err, connection) => {
+                if (err) {
+                    console.log("mysql_pool getConnection err =>", err)
+                    reject (false)
+                } else {
+                    resolve(connection.promise())
+                }
+            })
+        })
+    }
+
+    // 事务
+    async transaction () {
+
+        const connection = await this.conn()
+        if (!connection) { return false }
+        return connection.beginTransaction((err) => {
+            
+        })
+    }
+
     // 操作数据
     query (sql, values=[]) {
         const __this__ = this
         return new Promise ((resolve, reject) => {
             __this__.mysql_pool.getConnection((err, connection) => {
-                console.log("mysql get_conn =>", connection)
+                // console.log("mysql get_conn =>", connection)
                 if (err) { reject(err) }
                 else {
                     connection.query(sql, values, (error, results, fields) => {
