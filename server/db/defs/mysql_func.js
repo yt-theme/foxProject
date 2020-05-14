@@ -41,16 +41,6 @@ class Mysql_pool {
         })
     }
 
-    // 事务
-    async transaction () {
-
-        const connection = await this.conn()
-        if (!connection) { return false }
-        return connection.beginTransaction((err) => {
-            
-        })
-    }
-
     // 操作数据
     query (sql, values=[]) {
         const __this__ = this
@@ -62,7 +52,7 @@ class Mysql_pool {
                     connection.query(sql, values, (error, results, fields) => {
                         connection.release()
                         if (error) { reject(error) }
-                        resolve({ results, fields })
+                        resolve([ results, fields ])
                     })
                 }
             })

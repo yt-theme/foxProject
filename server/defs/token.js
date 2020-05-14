@@ -40,10 +40,10 @@ class Token {
                 'select * from users where id = ?',
                 [id]
             ).then((v) => {
-                if (v.results && v.results[0] && (v.results[0].id == id) && (iat <= exp)) {
+                if (v[0] && v[0][0] && (v[0][0].id == id) && (iat <= exp)) {
                     // 如果查询出的上次登录时间戳等于token中的时间戳
-                    if (v.results[0].lastlogin == lastlogin) {
-                        resolve({ "name": v.results[0].name, "lastlogin": v.results[0].lastlogin })
+                    if (v[0][0].lastlogin == lastlogin) {
+                        resolve({ "name": v[0][0].name, "lastlogin": v[0][0].lastlogin })
                     } else {
                         reject(false)
                     }

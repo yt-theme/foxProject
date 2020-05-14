@@ -25,7 +25,7 @@ class Account {
         // 接收数据
         let req_data = ''
         req.on('data', (chunk) => { req_data += chunk })
-        req.on('end', () => {
+        req.on('end', async () => {
 
             res.writeHead(200, {'Content-Type': 'application/json'})
             const params = querystring.parse(decodeURI(req_data))
@@ -38,23 +38,27 @@ class Account {
 
             // lastlogin时间默认值
             const lastlogin = new Date().getTime()
-            // db 增加用户操作
-            sql_func.query('insert into users(name, passwd, lastlogin) values (?, ?, ?)', 
-                [params.name, bcrypt.hashSync(params.passwd, config.BCRYPT.SALT), lastlogin]
-            ).then((v) => {
-                
-                if (v.results) {
-                    res.end(JSON.stringify({"ret": 1, "msg": '注册成功', "data": { "token": token_func.create(v.results.insertId, lastlogin.toString()) } }))
+
+            /// 事务操作 ///
+            const sql_promise = await sql_func.conn_promise()
+            try {
+                await sql_promise.beginTransaction()
+                const db_insert_ret = await sql_promise.query('insert into users(name, passwd, lastlogin) values (?, ?, ?)', 
+                                        [params.name, bcrypt.hashSync(params.passwd, config.BCRYPT.SALT), lastlogin])
+                if (db_insert_ret[0]) {
+                    await sql_promise.commit()
+                    res.end(JSON.stringify({"ret": 1, "msg": '注册成功', "data": { "token": token_func.create(db_insert_ret[0].insertId, lastlogin.toString()) } }))
                 }else {
+                    await sql_promise.rollback()
                     res.end(JSON.stringify({"ret": 0, "msg": '注册失败', "data": null }))
                 }
 
-            }).catch((err) => {
-                console.log("db结果 err =>", err)
-                res.end(JSON.stringify({ "ret": 0, "msg": '注册失败', "data": err }))
-            })
-
-            
+            } catch (e) {
+                await sql_promise.rollback()
+                res.end(JSON.stringify({"ret": 0, "msg": '注册失败', "data": e }))
+            } finally {
+                await sql_promise.release()
+            }
         })    
     }
 
@@ -122,7 +126,6 @@ class Account {
                 // 验证用户名
                 if (!user_info_data[0][0]) {
                     await sql_promise.rollback()
-                    await sql_promise.release()
                     res.end(JSON.stringify({"ret": 0, "msg": '用户名或密码不正确', "data": null }))
                     return false
                 }
@@ -130,7 +133,6 @@ class Account {
                 // 验证密码
                 if (!bcrypt.compareSync(req_passwd, user_info_data[0][0].passwd)) {
                     await sql_promise.rollback()
-                    await sql_promise.release()
                     res.end(JSON.stringify({"ret": 0, "msg": '用户名或密码不正确', "data": null }))
                     return false
                 }
