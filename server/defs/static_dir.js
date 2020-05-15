@@ -34,7 +34,6 @@ class Static_dir {
     handle (file_path, res) {
         // 文件后缀
         let ext_name = path.extname(file_path)
-        console.log("ext_name =>", ext_name)
         // 添加头信息
         if (ext_name.includes('html') || ext_name.includes('htm')) {
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf8' })
@@ -62,8 +61,6 @@ class Static_dir {
             })
         })
     }
-
-    // 读文件
 
     // -------------------------------------------------------------
     //                         操作数据

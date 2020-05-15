@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="file_selector_0" type="file"/>
+    <button onclick="do_upload()">上传</button>
+
+    <script src="utils.js"></script>
+    <script>
+        const file_0 = document.getElementById("file_selector_0")
+
+        async function upload () {
+            const file_obj = file_0.files[0]
+            console.log("file =>", file_obj)
+            // 文件切片大小
+            const split_size = 512 * 1024
+            
+            // 已选文件属性
+            const file_size = file_obj.size
+            const file_name = file_obj.name
+
+            // 总切片数
+            const total_split = Math.ceil(file_size / split_size)
+            // 时间戳
+            const timestamp = new Date().getTime()
+            // 唯一id
+            const uid = 0
+            
+            // 切片开始字节
+            let start_pos = 0
+            // 切片结束字节
+            let end_pos = 0
+            // 第几个切片
+            let split_index = 0
+
+            // 上传文件过程
+            while (start_pos < file_size) {
+                end_pos = (end_pos > file_size) ? file_size : (start_pos + split_size)
+
+                // 本切片的字节起止
+                let chunk = file_obj.slice(start_pos, end_pos)
+                // console.log('chunk =>', chunk.stream)
+
+                // 加进表单
+                let formData = new FormData()
+                formData.append('uid', uid)
+                formData.append('timestamp', timestamp)
+                formData.append('file_name', file_name)
+                formData.append('split_size', split_size)
+                formData.append('total_split', total_split)
+                formData.append('split_index', split_index)
+                formData.append('file', chunk)
+                let ajax_ret = await ajax_post("http://localhost:14498/uploadsplit", formData)
+                console.log("切片上传结果 =>", ajax_ret)
+                if (ajax_ret && ajax_ret.data.ret == 1) {
+                    start_pos = end_pos
+                    split_index += 1
+                } else {
+                    console.log("切片上传出错 =>", ajax_ret)
+                    return false
+                }
+            }
+
+            // 如果无错误则请求合并
+            let form_data_combine = new FormData()
+            form_data_combine.append('uid', uid)
+            form_data_combine.append('timestamp', timestamp)
+            form_data_combine.append('file_name', file_name)
+            form_data_combine.append('split_size', split_size)
+            form_data_combine.append('total_split', total_split)
+            let ajax_ret_combine = await ajax_post("http://localhost:14498/uploadcombine", form_data_combine)
+            if (ajax_ret_combine && ajax_ret_combine.data.ret == 1) {
+                console.log("完成 =>")
+            } else {
+                console.log("合并出错 =>", ajax_ret_combine)
+                return false
+            }
+
+        }
+
+        // 点击上传
+        function do_upload () {
+            upload()
+        }
+    </script>
+</body>
+</html>

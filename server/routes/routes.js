@@ -5,8 +5,9 @@
 const routes_dispatch = require("../defs/routes_dispatch")
 const static_dir      = require("../defs/static_dir")
 
-// 路由方法一定要在服务器启动前调用完毕
-const account_route = require("./route/account")
+// 功能上线方法一定要在服务器启动前调用完毕
+routes_dispatch.online(require("./route/account"))      // 帐号功能
+routes_dispatch.online(require("./route/upload"))       // 上传文件功能
 
 module.exports = (req, res) => {
 

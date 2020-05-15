@@ -1,5 +1,6 @@
+const path        = require('path')
 const querystring = require("querystring")
-const bcrypt = require('bcrypt')
+const bcrypt      = require('bcrypt')
 
 const routes_dispatch   = require("../../defs/routes_dispatch")
 const { route_define }  = require("../utils/decorator")
@@ -14,7 +15,7 @@ class Account {
 
     }
 
-    // 注册 表(users)
+    // 注册 表(users) 方法(POST) 参数(name:用户名, passwd:密码)
     // @route_define
     static register (req, res) {
         if (req.method != 'POST') {
@@ -62,7 +63,7 @@ class Account {
         })    
     }
 
-    // 检查登录 header中加{authorization: token}
+    // 检查登录 header中加{authorization: token} 方法(POST) 参数(无)
     static checklogin (req, res) {
         if (req.method != 'POST') {
             res.end(JSON.stringify({ "ret": 0, msg: "checklogin: !post not allowed" }))
@@ -93,7 +94,7 @@ class Account {
         })
     }
 
-    // 登录
+    // 登录 表(user) 方法(POST) 参数(name:用户名, passwd:密码)
     static login (req, res) {
         if (req.method != 'POST') {
             res.end(JSON.stringify({ "ret": 0, msg: "login: !post not allowed" }))

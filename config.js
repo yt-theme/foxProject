@@ -8,9 +8,21 @@ module.exports = {
     // 配置静态文件目录 格式(路由名: 绝对路径)
     STATIC_PATH_OBJ: {
         '/static': path.join(__dirname, './static'),
-        '/upload': path.join(__dirname, './upload'),
-        '/upload/tmp': path.join(__dirname, './upload'),
+        // '/upload': path.join(__dirname, './upload'),
+        // '/upload/tmp': path.join(__dirname, './upload/tmp'),
+        // '/upload/img': path.join(__dirname, './upload/img'),
+        '/index': path.join(__dirname, './frontEnd/demo'),
     },
+
+    // 上传文件的目录
+    UPLOAD_PATH: {
+        UPLOAD: path.join(__dirname, './upload'),
+        TMP: path.join(__dirname, './upload/tmp'),
+        IMG: path.join(__dirname, './upload/img')
+    },
+
+    // formidable 临时目录
+    FORMIDABLE_TMP: path.join('./upload/tmp/formidable_tmp'),
 
     // token key
     TOKEN_KEY: {

@@ -14,7 +14,7 @@ class Token {
             // payload
             { 
                 "id": id,
-                "exp": Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 367),
+                "exp": Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 367), // 过期时间
                 "lastlogin": lastlogin  // 上次登录时间戳
             },
             // key
@@ -51,7 +51,6 @@ class Token {
                     reject(false)
                 }
             }).catch((err) => {
-                console.log("token 验证 err =>", err)
                 reject(false)
             })
         })

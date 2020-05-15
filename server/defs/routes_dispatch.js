@@ -10,7 +10,8 @@ class Routes_dispatch {
         this.routes_obj = {
             // route_name: {
             //     method: 'POST' || 'GET'
-            //     method: Function
+            //     func: Function
+            //     module: modules
             // }
         }
     }
@@ -24,11 +25,17 @@ class Routes_dispatch {
     }
 
     // 定义路由规则
-    define (route_url, method, func) {
+    define (route_url, method, func, module=null) {
         this.routes_obj[route_url] = {
             "method":   method,
-            "func":     func
+            "func":     func,
+            "module":   module  // 路由所在模块 如果有的话
         }
+    }
+
+    // 路由上线
+    online (module) {
+        return module
     }
 
     // 路由执行
