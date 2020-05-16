@@ -1,3 +1,6 @@
+/*
+    上传文件前端用法见@/frontEnd/demo/upload_split_demo.html
+*/
 const querystring = require("querystring")
 const bcrypt = require('bcrypt')
 const formidable = require('formidable')
